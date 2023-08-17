@@ -6,4 +6,4 @@ The codes present in this repository aim to create a web framework for generatin
 
 ### Remider
 
-At first, the framework will perform analyzes only on files derived from the scopus database, later, I will add treatment for the web of science and IEEE databases.
+At first, the framework will perform analyzes only on files derived from the **scopus** database, later, I will add treatment for the **web of science** and **IEEE** databases.
