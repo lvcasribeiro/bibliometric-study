@@ -4,7 +4,7 @@ The codes present in this repository aim to create a web framework for generatin
 
 ##
 
-### Analysis and their results
+### Analyzes and their results
 
 ###### 1. Language analysis:
 It will perform an analysis based on the writing language of the documents, returning a pie chart with the percentages equivalent to each one of them:
