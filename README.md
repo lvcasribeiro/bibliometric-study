@@ -19,6 +19,19 @@ languages_analysis.languages_analysis(scopus_dataframe);
 
 ##
 
+###### 2. Year analysis:
+It will perform an analysis based on the publications years of the documents, returning a bar chart with the total amount of each one of them:
+
+```python
+year_analysis.year_analysis(scopus_dataframe);
+```
+
+<p align="center">
+    <img src="https://github.com/lvcasribeiro/bibliometric-study/assets/96185134/12329fd3-dbc5-43cf-8158-cbdd5e6dcf96">
+</p>
+
+##
+
 ### Remider
 
 At first, the framework will perform analyzes only on files derived from the **scopus** database, later, I will add treatment for the **web of science** and **IEEE** databases.
