@@ -13,7 +13,6 @@ def year_analysis(df):
     ax.grid(axis='x');
 
     years_list = list(np.arange(years.values.min() - 1, years.values.max() + 2, 1));
-    print(years_list)
 
     pypt.yticks(years_list);
     pypt.show();
