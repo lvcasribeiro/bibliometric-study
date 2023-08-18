@@ -1,6 +1,7 @@
 # Packages importation:
 import matplotlib.pyplot as pypt
 
+# Languages analysis:
 def languages_analysis(df):
     languages = df['Language of Original Document'].value_counts();
 
