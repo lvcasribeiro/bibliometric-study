@@ -32,7 +32,7 @@ year_analysis.year_analysis(scopus_dataframe);
 
 ##
 
-###### 2. Evolution of publications per year analysis:
+###### 3. Evolution of publications per year analysis:
 It will perform an analysis based on the publications years of the documents, returning a line chart with the evolution of publications per year:
 
 ```python
@@ -41,6 +41,19 @@ evolution_analysis.evolution_analysis(scopus_dataframe);
 
 <p align="center">
     <img src="https://github.com/lvcasribeiro/bibliometric-study/assets/96185134/5f411e09-b72b-4bd2-8d4b-87a3c1fe91a5">
+</p>
+
+##
+
+###### 4. Documents type analysis:
+It will perform an analysis based on the documents type, returning a pie chart with all types identified and a caption box at the top right corner:
+
+```python
+type_analysis.type_analysis(scopus_dataframe);
+```
+
+<p align="center">
+    <img src="https://github.com/lvcasribeiro/bibliometric-study/assets/96185134/b870cf14-0743-4a65-b656-f16831bcf9af">
 </p>
 
 ##
