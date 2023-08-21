@@ -58,6 +58,19 @@ type_analysis.type_analysis(scopus_dataframe);
 
 ##
 
+###### 5. Word cloud analysis:
+It will perform an analysis based on the main keywords, returning a word map with the most relevant keywords related to the document, the most relevant being displayed in larger sizes:
+
+```python
+wordmap_analysis.wordmap_analysis(scopus_dataframe);
+```
+
+<p align="center">
+    <img src="https://github.com/lvcasribeiro/bibliometric-study/assets/96185134/65f0b6c4-e52d-4f46-8269-76aeb93cc411">
+</p>
+
+##
+
 ### Remider
 
 At first, the framework will perform analyzes only on files derived from the **scopus** database, later, I will add treatment for the **web of science** and **IEEE** databases.
