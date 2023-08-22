@@ -97,6 +97,19 @@ periodics_analysis.periodics_analysis(scopus_dataframe);
 
 ##
 
+###### 8. Citations analysis:
+It will perform an analysis based on the citations of each document, returning a bar chart with the 10 most relevant papers, based on the total amount of citations:
+
+```python
+citations_analysis.citations_analysis(scopus_dataframe);
+```
+
+<p align="center">
+    <img src="https://github.com/lvcasribeiro/bibliometric-study/assets/96185134/00338528-5db4-425c-be37-55c9365e1e5a">
+</p>
+
+##
+
 ### Remider
 
 At first, the framework will perform analyzes only on files derived from the **scopus** database, later, I will add treatment for the **web of science** and **IEEE** databases.
