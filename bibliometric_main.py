@@ -8,6 +8,7 @@ import evolution_analysis
 import type_analysis
 import wordmap_analysis
 import keywords_analysis
+import periodics_analysis
 
 # Reading the .csv scopus file:
 scopus_dataframe = pypd.read_csv(r'C:\Users\lucas\Downloads\scopus-193.csv');
@@ -20,3 +21,4 @@ if __name__ == '__main__':
     type_analysis.type_analysis(scopus_dataframe);
     wordmap_analysis.wordmap_analysis(scopus_dataframe);
     keywords_analysis.keywords_analysis(scopus_dataframe);
+    periodics_analysis.periodics_analysis(scopus_dataframe);
