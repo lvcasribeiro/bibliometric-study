@@ -59,7 +59,7 @@ type_analysis.type_analysis(scopus_dataframe);
 ##
 
 ###### 5. Word cloud analysis:
-It will perform an analysis based on the main keywords, returning a word map with the most relevant keywords related to the document, the most relevant being displayed in larger sizes:
+It will perform an analysis based on the main keywords from title and abstract, returning a word map with the most relevant keywords related to the document, the most relevant being displayed in larger sizes:
 
 ```python
 wordmap_analysis.wordmap_analysis(scopus_dataframe);
@@ -67,6 +67,19 @@ wordmap_analysis.wordmap_analysis(scopus_dataframe);
 
 <p align="center">
     <img src="https://github.com/lvcasribeiro/bibliometric-study/assets/96185134/65f0b6c4-e52d-4f46-8269-76aeb93cc411">
+</p>
+
+##
+
+###### 6. Keywords analysis:
+It will perform an analysis based on the keywords, returning a bar chart with the 10 most relevant keywords related to the document:
+
+```python
+keywords_analysis.keywords_analysis(scopus_dataframe);
+```
+
+<p align="center">
+    <img src="https://github.com/lvcasribeiro/bibliometric-study/assets/96185134/9f687edc-659d-499c-9fbe-ad5f3a8d66b4">
 </p>
 
 ##
