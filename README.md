@@ -84,6 +84,19 @@ keywords_analysis.keywords_analysis(scopus_dataframe);
 
 ##
 
+###### 7. Periodics analysis:
+It will perform an analysis based on the publishers or periodics, returning a bar chart with the 10 most relevant publishers, based on the total amount of publications:
+
+```python
+periodics_analysis.periodics_analysis(scopus_dataframe);
+```
+
+<p align="center">
+    <img src="https://github.com/lvcasribeiro/bibliometric-study/assets/96185134/058e01b0-1b5a-4ad7-9e1d-0acffa6cad8e">
+</p>
+
+##
+
 ### Remider
 
 At first, the framework will perform analyzes only on files derived from the **scopus** database, later, I will add treatment for the **web of science** and **IEEE** databases.
