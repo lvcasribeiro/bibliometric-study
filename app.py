@@ -1,5 +1,5 @@
 # Packages importation:
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for, send_file
 from werkzeug.utils import secure_filename
 import os
 
@@ -13,6 +13,7 @@ from analysis.keywords_analysis import keywords_analysis
 from analysis.citations_analysis import citations_analysis
 
 import data_treatment
+import merge_scopus_wos
 
 # Global variables:
 UPLOAD_FOLDER = os.path.join(os.getcwd(), 'upload');
@@ -28,7 +29,7 @@ def home():
 
 
 # Upload route:
-@app.route('/analyzes', methods=['GET', 'POST'])
+@app.route('/analyzes', methods=['POST'])
 def analyzes():
     file = request.files['database'];
     save_path = os.path.join(UPLOAD_FOLDER, secure_filename(file.filename));
@@ -61,6 +62,48 @@ def analyzes():
                            periodics_json=periodics_json, 
                            keywords_json=keywords_json,
                            citations_json=citations_json)
+
+
+# Merge route:
+@app.route('/merge', methods=['GET', 'POST'])
+def merge():
+    return render_template('merge.html', result_file=False)
+
+
+# Merged route:
+@app.route('/sucessfull_merge', methods=['GET', 'POST'])
+def merged():
+    files = request.files.getlist("merge_databases");
+
+    for file in files:
+        if str(file.filename)[-4:] == '.txt':
+            file.save('upload/wos.txt');
+        elif str(file.filename)[-4:] == '.csv':
+            file.save('upload/scopus.csv');
+        else:
+            pass;
+
+    merge_scopus_wos.merge_scopus_wos();
+
+    return render_template('merge.html', result_file=True)
+
+@app.route('/download_file', methods=['GET'])
+def download():
+    return send_file(
+        'upload/database.csv',
+        mimetype='text/csv',
+        download_name='scopus-wos-merged.csv',
+        as_attachment=True
+    )
+
+
+# Languages route:
+@app.route('/languages')
+def languages():
+    dataframe = data_treatment.csv_reading();
+    languages_json = languages_analysis(dataframe);
+
+    return languages_json
 
 
 # Overall execution:
