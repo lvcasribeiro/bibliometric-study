@@ -23,20 +23,19 @@ var myLineChart = new Chart(ctx, {
         scales: {
             xAxes: [{
                 time: {
-                    unit: 'year'
+                    beginAtZero: true
                 },
                 gridLines: {
                     display: false
                 },
                 ticks: {
-                    maxTicksLimit: 6
+                    maxTicksLimit: 6,
+                    beginAtZero: true
                 }
             }],
             yAxes: [{
                 ticks: {
-                    min: 0,
                     max: Math.max(...Object.values(periodic_json_file)),
-                    maxTicksLimit: 5,
                     autoSkip: false
                 },
                 gridLines: {
