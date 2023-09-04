@@ -12,5 +12,8 @@ def type_analysis(df):
     ax.pie(doc_counts.values, labels=doc_counts.index, autopct='%1.1f%%');
 
     ax.legend(loc='upper left', bbox_to_anchor=(1.0, 1.0));
-    pypt.title('Document Type');
-    pypt.show();
+    # ax.savefig('static/type_output.png');
+
+    documents_json = doc_counts.to_dict();
+
+    return documents_json

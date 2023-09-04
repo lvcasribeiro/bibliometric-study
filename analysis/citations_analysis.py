@@ -6,7 +6,7 @@ import textwrap
 def citations_analysis(df):
     paper_citations = df.groupby("Title")["Cited by"].sum();
 
-    top_papers = paper_citations.sort_values(ascending=False)[:11];
+    top_papers = paper_citations.sort_values(ascending=False)[:10];
 
     # Remove duplicated papers, if necessary:
     # remove_articles = [""];
@@ -22,4 +22,8 @@ def citations_analysis(df):
     ax.set_yticks(yticks_pos);
     ax.set_yticklabels(yticklabels);
     ax.grid(axis='x');
-    pypt.show();
+    # pypt.show();
+
+    citations_json = top_papers.to_dict();
+
+    return citations_json

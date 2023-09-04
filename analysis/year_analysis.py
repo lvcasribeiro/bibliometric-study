@@ -15,4 +15,8 @@ def year_analysis(df):
     years_list = list(np.arange(years.values.min() - 1, years.values.max() + 2, 1));
 
     pypt.yticks(years_list);
-    pypt.show();
+    # pypt.savefig('static/year_output.png');
+
+    years_json = years.value_counts().to_dict();
+
+    return years_json

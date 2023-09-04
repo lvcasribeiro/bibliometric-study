@@ -14,4 +14,8 @@ def periodics_analysis(df):
     pypt.gca().invert_yaxis();
     pypt.xlabel('Ocurrence');
     pypt.grid(axis='x');
-    pypt.show();
+    # pypt.show();
+
+    periodics_json = study_areas.to_dict();
+
+    return periodics_json

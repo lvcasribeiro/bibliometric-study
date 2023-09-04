@@ -9,4 +9,8 @@ def languages_analysis(df):
     # languages.index = ['Inglês' if lang == 'English' else 'Chinês' if lang == 'Chinese' else 'Coreano' if lang == 'Korean' else lang for lang in languages.index];
 
     pypt.pie(languages.values, labels=languages.index, autopct='%1.1f%%');
-    pypt.show();
+    # pypt.savefig('static/languages_output.png');
+
+    languages_json = languages.to_dict();
+
+    return languages_json
