@@ -74,7 +74,7 @@
                             Home
                         </a>
                         <div class="sb-sidenav-menu-heading">Tools</div>
-                        <a class="nav-link" href="/">
+                        <a class="nav-link" href="/merge">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             Merge
                         </a>
@@ -88,14 +88,14 @@
                         <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="#" id="languages-analysis-button">Languages</a>
-                                <a class="nav-link" href="#" id="year-analysis-button">Year</a>
-                                <a class="nav-link" href="#">Year Evolution</a>
-                                <a class="nav-link" href="#">Periodics</a>
-                                <a class="nav-link" href="#">Wordmap</a>
-                                <a class="nav-link" href="#">Citations</a>
-                                <a class="nav-link" href="#">Keywords</a>
-                                <a class="nav-link" href="#">Document Type</a>
+                                <a class="nav-link" href="/languages" id="languages-analysis-button">Languages</a>
+                                <a class="nav-link" href="/" id="year-analysis-button">Year</a>
+                                <a class="nav-link" href="/">Year Evolution</a>
+                                <a class="nav-link" href="/">Periodics</a>
+                                <a class="nav-link" href="/">Wordmap</a>
+                                <a class="nav-link" href="/">Citations</a>
+                                <a class="nav-link" href="/">Keywords</a>
+                                <a class="nav-link" href="/">Document Type</a>
                             </nav>
                         </div>
                     </div>
@@ -122,7 +122,7 @@
                                     <i class="fa-solid fa-language me-1"></i>
                                     Languages
                                 </div>
-                                <div class="card-body"><canvas id="language_chart" width="100%" height="40"></canvas>
+                                <div class="card-body"><canvas id="language_chart" width="100%" height="50vh"></canvas>
                                 </div>
                                 <input type='hidden' id='language_json'
                                     data-thetargets='{{ languages_json|tojson|safe }}' />
@@ -134,7 +134,7 @@
                                     <i class="fa-solid fa-arrow-trend-up me-1"></i>
                                     Evolution per year
                                 </div>
-                                <div class="card-body"><canvas id="evolution_chart" width="100%" height="40"></canvas>
+                                <div class="card-body"><canvas id="evolution_chart" width="100%" height="50vh"></canvas>
                                 </div>
                                 <input type='hidden' id='evolution_json'
                                     data-thetargets='{{ evolutions_json|tojson|safe }}' />
@@ -149,7 +149,7 @@
                                     <i class="fa-regular fa-calendar-minus me-1"></i>
                                     Year
                                 </div>
-                                <div class="card-body"><canvas id="year_chart" width="100%" height="40"></canvas></div>
+                                <div class="card-body"><canvas id="year_chart" width="100%" height="50vh"></canvas></div>
                                 <input type='hidden' id='year_json' data-thetargets='{{ years_json|tojson|safe }}' />
                             </div>
                         </div>
@@ -159,7 +159,7 @@
                                     <i class="fa-solid fa-quote-left me-1"></i>
                                     Document type
                                 </div>
-                                <div class="card-body"><canvas id="document_chart" width="100%" height="40"></canvas>
+                                <div class="card-body"><canvas id="document_chart" width="100%" height="50vh"></canvas>
                                 </div>
                                 <input type='hidden' id='document_json'
                                     data-thetargets='{{ documents_json|tojson|safe }}' />
@@ -172,7 +172,7 @@
                             <i class="fa-solid fa-newspaper me-1"></i>
                             Periodics
                         </div>
-                        <div class="card-body"><canvas id="periodic_chart" width="100%" height="30"></canvas></div>
+                        <div class="card-body"><canvas id="periodic_chart" width="100%" height="30vh"></canvas></div>
                         <input type='hidden' id='periodic_json' data-thetargets='{{ periodics_json|tojson|safe }}' />
                     </div>
 
