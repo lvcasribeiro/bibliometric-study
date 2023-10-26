@@ -32,7 +32,7 @@ app.secret_key = 'sua_chave_secreta_aqui'
 
 
 # Home route:
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def home():
     return render_template('index.html')
 
