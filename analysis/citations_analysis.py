@@ -6,7 +6,7 @@ import textwrap
 def citations_analysis(df):
     paper_citations = df.groupby("Title")["Cited by"].sum();
 
-    top_papers = paper_citations.sort_values(ascending=False)[:10];
+    top_papers = paper_citations.sort_values(ascending=False)[:50];
 
     # Remove duplicated papers, if necessary:
     # remove_articles = [""];
@@ -25,5 +25,11 @@ def citations_analysis(df):
     # pypt.show();
 
     citations_json = top_papers.to_dict();
+
+    for key, value in citations_json.items():
+        try:
+            citations_json[key] = int(value)
+        except ValueError:
+            pass
 
     return citations_json

@@ -15,5 +15,15 @@ def type_analysis(df):
     # ax.savefig('static/type_output.png');
 
     documents_json = doc_counts.to_dict();
+    
+    for key in list(documents_json.keys()):
+        if "research-article" in key:
+            documents_json["Article"] += documents_json[key]
+
+            del documents_json[key]
+        if "Conference review" in key:
+            documents_json["Review"] += documents_json[key]
+
+            del documents_json[key]
 
     return documents_json
