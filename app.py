@@ -2,6 +2,7 @@
 from flask import Flask, session, render_template, request, redirect, url_for, send_file, jsonify
 from werkzeug.utils import secure_filename
 import os
+import boto3
 import uuid
 import shutil
 import threading
@@ -37,28 +38,85 @@ def home():
     return render_template('index.html')
 
 
+# Bucket S3:
+s3 = boto3.client('s3', aws_access_key_id='AKIA4MG5PQ7GSL7GVDAF',
+                  aws_secret_access_key='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')
+
+
+def create_s3_folder(bucket_name, s3_folder_name):
+    try:
+        # Adicione uma barra no final do nome da pasta para indicar que é uma pasta
+        if not s3_folder_name.endswith('/'):
+            s3_folder_name += '/'
+        # Crie um objeto vazio representando a pasta
+        s3.put_object(Bucket=bucket_name, Key=s3_folder_name)
+        return True
+    except Exception as e:
+        return False
+
+def delete_s3_folder(bucket_name, s3_folder_name):
+    try:
+        objects = s3.list_objects_v2(Bucket=bucket_name, Prefix=s3_folder_name)
+        if 'Contents' in objects:
+            for obj in objects['Contents']:
+                s3.delete_object(Bucket=bucket_name, Key=obj['Key'])
+
+        s3.delete_object(Bucket=bucket_name, Key=s3_folder_name)
+        
+        return True
+    except Exception as e:
+        return False
+
+
+def upload_file_to_s3(file, bucket_name, s3_file_name):
+    try:
+        s3.upload_fileobj(file, bucket_name, s3_file_name)
+        return True
+    except Exception as e:
+        return False
+
+
+def delete_file_from_s3(bucket_name, s3_file_name):
+    try:
+        s3.delete_object(Bucket=bucket_name, Key=s3_file_name)
+        return True
+    except Exception as e:
+        return False
+
+
+def get_file_object_from_s3(bucket_name, s3_file_name):
+    try:
+        response = s3.get_object(Bucket=bucket_name, Key=s3_file_name)
+        return response['Body']
+    except Exception as e:
+        return None
+
+
 # Upload route:
 @app.route('/analyzes', methods=['GET', 'POST'])
 def analyzes():
     try:
         if request.method == 'POST':
             file = request.files['database']
-            save_path = os.path.join(
-                UPLOAD_FOLDER, secure_filename(file.filename))
-            file.save(save_path)
+            # save_path = os.path.join(
+            #     UPLOAD_FOLDER, secure_filename(file.filename))
+            # file.save(save_path)
 
             str_datetime = datetime_capture.captura_data_e_horario()
             session_id = str(uuid.uuid4())
             session['dataframe_name'] = f'database-{str_datetime}-{session_id}.csv'
 
-            if (os.path.exists(os.path.join(UPLOAD_FOLDER, f'database-{str_datetime}-{session_id}.csv'))):
-                os.remove(os.path.join(UPLOAD_FOLDER,
-                          f'database-{str_datetime}-{session_id}.csv'))
-            else:
-                pass
+            upload_file_to_s3(
+                file, 'bibliometric-analyzes-bucket', session["dataframe_name"])
 
-            os.rename(save_path, os.path.join(UPLOAD_FOLDER,
-                      f'database-{str_datetime}-{session_id}.csv'))
+            # if (os.path.exists(os.path.join(UPLOAD_FOLDER, f'database-{str_datetime}-{session_id}.csv'))):
+            #     os.remove(os.path.join(UPLOAD_FOLDER,
+            #               f'database-{str_datetime}-{session_id}.csv'))
+            # else:
+            #     pass
+
+            # os.rename(save_path, os.path.join(UPLOAD_FOLDER,
+            #           f'database-{str_datetime}-{session_id}.csv'))
             dataframe = data_treatment.csv_reading(
                 f'database-{str_datetime}-{session_id}.csv')
             dataframe_name = session.get('dataframe_name')
@@ -76,26 +134,28 @@ def analyzes():
         keywords_json = keywords_analysis(dataframe)
         citations_json = citations_analysis(dataframe)
 
-        threading.Timer(33200, delete_bibliometric_file, args=(dataframe_name,)).start()
+        threading.Timer(3600, delete_bibliometric_file,
+                        args=(dataframe_name,)).start()
 
         return render_template('upload.html',
-                               headings=headings,
-                               data=data,
-                               years_json=years_json,
-                               languages_json=languages_json,
-                               documents_json=documents_json,
-                               evolutions_json=evolutions_json,
-                               periodics_json=periodics_json,
-                               keywords_json=keywords_json,
-                               citations_json=citations_json)
+                                headings=headings,
+                                data=data,
+                                years_json=years_json,
+                                languages_json=languages_json,
+                                documents_json=documents_json,
+                                evolutions_json=evolutions_json,
+                                periodics_json=periodics_json,
+                                keywords_json=keywords_json,
+                                citations_json=citations_json)
     except:
         return render_template('error.html')
-        
 
 
 def delete_bibliometric_file(filename):
-    if os.path.exists(f'upload/{filename}'):
-        os.remove(f'upload/{filename}')
+    # if os.path.exists(f'upload/{filename}'):
+    #     os.remove(f'upload/{filename}')
+
+    delete_file_from_s3('bibliometric-analyzes-bucket', filename)
 
 
 # Merge route:
@@ -103,9 +163,8 @@ def delete_bibliometric_file(filename):
 def merge():
     return render_template('merge.html', result_file=False)
 
+
 # Merged route:
-
-
 @app.route('/sucessfull_merge', methods=['GET', 'POST'])
 def merged():
     try:
@@ -115,26 +174,36 @@ def merged():
         session_id = str(uuid.uuid4())
         session["merge_upload_folder"] = f'merge-{str_datetime}-{session_id}'
 
-        os.makedirs(f'upload\\{session["merge_upload_folder"]}')
+        # os.makedirs(f'upload\\{session["merge_upload_folder"]}')
+
+        create_s3_folder('bibliometric-analyzes-bucket', session["merge_upload_folder"])
 
         for file in files:
-            if str(file.filename)[-4:] == '.txt':
-                file.save(f'upload/{session["merge_upload_folder"]}/wos.txt')
-            elif str(file.filename)[-4:] == '.csv':
-                file.save(
-                    f'upload/{session["merge_upload_folder"]}/scopus.csv')
+            if len(files) > 1:
+                if str(file.filename)[-4:] == '.txt':
+                    # file.save(f'upload/{session["merge_upload_folder"]}/wos.txt')
+                    upload_file_to_s3(file, 'bibliometric-analyzes-bucket', f'{session["merge_upload_folder"]}/wos.txt')
+                elif str(file.filename)[-4:] == '.csv':
+                    # file.save(f'upload/{session["merge_upload_folder"]}/scopus.csv')
+                    upload_file_to_s3(file, 'bibliometric-analyzes-bucket', f'{session["merge_upload_folder"]}/scopus.csv')
+                else:
+                    # if os.path.exists(f'upload/{session["merge_upload_folder"]}'):
+                    #     shutil.rmtree(f'upload/{session["merge_upload_folder"]}')
+                    delete_s3_folder('bibliometric-analyzes-bucket', session["merge_upload_folder"])
+                    return render_template('merge.html', result_file='not_a_zip')
             else:
-                if os.path.exists(f'upload/{session["merge_upload_folder"]}'):
-                    shutil.rmtree(f'upload/{session["merge_upload_folder"]}')
-
+                # if os.path.exists(f'upload/{session["merge_upload_folder"]}'):
+                #     shutil.rmtree(f'upload/{session["merge_upload_folder"]}')
+                delete_s3_folder('bibliometric-analyzes-bucket', session["merge_upload_folder"])
                 return render_template('merge.html', result_file='not_a_zip')
 
         merge_scopus_wos.merge_scopus_wos(str_datetime, session_id)
 
         return render_template('merge.html', result_file=True)
     except:
-        if os.path.exists(f'upload/{session["merge_upload_folder"]}'):
-            shutil.rmtree(f'upload/{session["merge_upload_folder"]}')
+        # if os.path.exists(f'upload/{session["merge_upload_folder"]}'):
+        #     shutil.rmtree(f'upload/{session["merge_upload_folder"]}')
+        delete_s3_folder('bibliometric-analyzes-bucket', session["merge_upload_folder"])
 
         return render_template('error.html')
 
@@ -146,7 +215,8 @@ def download():
         download_folder = session.get("merge_upload_folder")
         if download_folder is not None:
             return send_file(
-                f'upload/{download_folder}/merged-database.csv',
+                get_file_object_from_s3('bibliometric-analyzes-bucket', f'{download_folder}/merged-database.csv'),
+                # f'upload/{download_folder}/merged-database.csv',
                 mimetype='text/csv',
                 download_name='scopus-wos-merged.csv',
                 as_attachment=True
@@ -159,8 +229,10 @@ def download():
 
 
 def delete_merge_folder(download_folder):
-    if os.path.exists(f'upload/{download_folder}'):
-        shutil.rmtree(f'upload/{download_folder}')
+    # if os.path.exists(f'upload/{download_folder}'):
+    #     shutil.rmtree(f'upload/{download_folder}')
+
+    delete_s3_folder('bibliometric-analyzes-bucket', download_folder)
 
 
 # Metadata route:
@@ -355,4 +427,4 @@ def languages():
 
 # Overall execution:
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0')

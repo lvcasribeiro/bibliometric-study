@@ -1,18 +1,30 @@
 # Packages importation:
 import pandas as pypd
+import boto3
 import os
 
+s3 = boto3.client('s3', aws_access_key_id='AKIA4MG5PQ7GSL7GVDAF',
+                  aws_secret_access_key='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')
+
 # Global variables:
-UPLOAD_FOLDER = os.path.join(os.getcwd(), 'upload')
+# UPLOAD_FOLDER = os.path.join(os.getcwd(), 'upload')
 
 # .csv file reading:
-def csv_reading(file_name):
-    # Reading the .csv scopus file:
-    print(file_name)
-    scopus_dataframe = pypd.read_csv(
-        os.path.join(UPLOAD_FOLDER, file_name))
+# def csv_reading(file_name):
+#     # Reading the .csv scopus file:
+#     print(file_name)
+#     scopus_dataframe = pypd.read_csv(
+#         os.path.join(UPLOAD_FOLDER, file_name))
 
-    return scopus_dataframe
+#     return scopus_dataframe
+
+def csv_reading(file_name):
+    try:
+        response = s3.get_object(Bucket='bibliometric-analyzes-bucket', Key=file_name)
+        scopus_dataframe = pypd.read_csv(response['Body'])
+        return scopus_dataframe
+    except Exception as e:
+        return None
 
 
 # .csv file treatment:
