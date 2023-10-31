@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>UnB Engine</title>
+    <title>Bibliometric Engine</title>
 
     <!-- Simple datatables -->
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
@@ -25,7 +25,7 @@
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="/">UnB Engine</a>
+        <a class="navbar-brand ps-3" href="/">Bibliometric Engine</a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
                 class="fas fa-bars"></i></button>
@@ -39,28 +39,6 @@
                         class="fas fa-search"></i></button>
             </div>
         </form>
-
-        <!-- Navbar-->
-        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false"><i class="fa-solid fa-arrow-up-from-bracket"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <form action="/analyzes" enctype="multipart/form-data" method="post" style="padding: 5%;">
-                        <li>
-                            <div class="mb-3">
-                                <input class="form-control form-control-sm" name="database" id="database" type="file">
-                            </div>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider" />
-                        </li>
-                        <li class="d-flex justify-content-center">
-                            <button type="submit" class="btn btn-warning btn-sm" id="submit-btn">Upload</button>
-                        </li>
-                    </form>
-                </ul>
-            </li>
         </ul>
     </nav>
     <div id="layoutSidenav">
@@ -78,17 +56,14 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             Databases Merge
                         </a>
-                        <a class="nav-link" href="/metadata">
-                            <div class="sb-nav-link-icon"><i class="fa-solid fa-image"></i></div>
-                            Image Metadata
+                        <a class="nav-link" href="/statistical">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-chart-line"></i></div>
+                            Statistical Analysis
                         </a>
-                        <a class="nav-link" href="/kml_merge">
-                            <div class="sb-nav-link-icon"><i class="fa-solid fa-file-lines"></i></div>
-                            KML Files Merge
-                        </a>
-                        <a class="nav-link" href="/train_test">
-                            <div class="sb-nav-link-icon"><i class="fa-solid fa-file-code"></i></div>
-                            Data Serializer
+                        <div class="sb-sidenav-menu-heading">Info</div>
+                        <a class="nav-link" href="/about">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-circle-info"></i></div>
+                            About
                         </a>
                     </div>
                 </div>
@@ -103,7 +78,7 @@
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">Home</h1>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item">UnB Engine</li>
+                        <li class="breadcrumb-item">Bibliometric Engine</li>
                         <li class="breadcrumb-item active">Home</li>
                     </ol>
 
@@ -193,7 +168,7 @@
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; UnB (GPIPP) UnB Engine - 2023</div>
+                        <div class="text-muted">Copyright &copy; UnB (GPIPP) Bibliometric Engine - 2023</div>
                         <div>
                             <a href="#">Privacy Policy</a>
                             &middot;

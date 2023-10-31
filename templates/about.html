@@ -75,84 +75,53 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Databases Merge</h1>
+                    <h1 class="mt-4">About</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item">Bibliometric Engine</li>
-                        <li class="breadcrumb-item active">Databases Merge</li>
+                        <li class="breadcrumb-item active">About</li>
                     </ol>
 
                     <div class="row">
-                        <div class="col-xl-6">
+                        <div class="col-xl-12">
                             <div class="card mb-4">
                                 <div class="card-header">
-                                    <i class="fa-solid fa-database me-1"></i>
-                                    Merging Scopus and Web of Science
+                                    <i class="fa-regular fa-circle-question me-1"></i>
+                                    About the <strong>Usage of the Tools</strong>
                                 </div>
                                 <div class="container" style="padding: 2.5rem;">
                                     <p>
-                                        Combining these comprehensive sources of scholarly
-                                        information can provide researchers with a more holistic view of the academic
-                                        landscape, enabling deeper insights, better bibliometric analysis, and improved
-                                        citation tracking. This integration fosters a more efficient and comprehensive
-                                        research ecosystem, benefiting both scholars and institutions in their pursuit
-                                        of knowledge discovery and impact assessment.
-                                    <div class="d-flex justify-content-center">
-                                        <img src="/static/images/databases-image.svg" alt="Database image."
-                                            style="width: 17.5rem;">
-                                    </div>
+                                        Merging databases and conducting statistical analysis are essential tools in
+                                        modern data management. By combining disparate datasets, researchers and
+                                        analysts can uncover valuable insights, spot trends, and make informed
+                                        decisions. Statistical analysis aids in extracting meaningful patterns and
+                                        drawing conclusions, supporting data-driven strategies across various fields.
+                                    </p>
+
+                                    <br>
+
+                                    <ol class="list-group list-group-numbered">
+                                        <li><h6 class="text-sucess">Steps for Databases Merge Tool:</h6></li>
+                                        <br>
+                                        <li class="list-group-item">Using your search strings, perform a search in the <strong>Scopus</strong> database and export the results in <strong>.csv</strong> format;</li>
+                                        <li class="list-group-item">Using your search strings, perform a search in the <strong>Web of Science</strong> database and export the results in <strong>.txt</strong> (plain text) format;</li>
+                                        <li class="list-group-item">Ensure that you export with all fields selected, capturing all possible columns;</li>
+                                        <li class="list-group-item">Upload both files to the Databases Merge tool and;</li>
+                                        <li class="list-group-item">Download the results.</li>
+                                    </ol>
+
+                                    <br><br>
+
+                                    <ol class="list-group list-group-numbered">
+                                        <li><h6>Steps for Statistical Analysis Tool:</h6></li>
+                                        <br>
+                                        <li class="list-group-item">Upload the resulting spreadsheet obtained from <strong>Databases Merge</strong> into the Statistical Analysis tool.</li>
+                                    </ol>
                                 </div>
                                 <div class="align-items-center small card-footer">
-                                    <a class="text-success text-center" style="text-decoration: none;" href="/about"><i class="fa-regular fa-circle-question"></i> <strong>About</strong> the usage of the tool.</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-6">
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <i class="fa-solid fa-file-arrow-down me-1"></i>
-                                    Upload files
-                                </div>
-                                <div class="container" style="padding: 2.5rem;">
-                                    <p>
-                                        Here, u must drop a <strong>scopus.csv</strong> file and a
-                                        <strong>web_of_science.txt</strong> file, as instructed in the callout aside.
-                                    </p>
-                                    <form action="/sucessfull_merge" enctype="multipart/form-data" method="post">
-                                        <div class="mb-3">
-                                            <input class="form-control form-control-sm" name="merge_databases"
-                                                id="merge_databases" type="file" multiple>
-                                        </div>
-                                        {% if result_file == True %}
-                                        <small>
-                                            <div class="alert alert-success text-center alert-dismissible fade show"
-                                                role="alert">
-                                                Sucessfully merged!
-                                                <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                        </small>
-                                        {% endif %}
-                                        {% if result_file == 'not_a_zip' %}
-                                        <small>
-                                            <div class="alert alert-danger text-center alert-dismissible fade show"
-                                                role="alert">
-                                                U must upload a <strong>.csv</strong> and a <strong>.txt</strong> file!
-                                                <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                        </small>
-                                        {% endif %}
-                                        <div class="d-flex justify-content-around">
-                                            <button type="submit" class="btn btn-warning btn-sm"
-                                                id="submit-btn">Upload</button>
-                                            {% if result_file == True %}
-                                            <a class="btn btn-success btn-sm" href="/download_file"
-                                                download="scopus-wos-merged.csv">
-                                                Download
-                                            </a>
-                                            {% endif %}
-                                        </div>
-                                    </form>
+                                    <a class="text-primary text-center" style="text-decoration: none;" href="https://youtu.be/VQI5gC5KyWw" target="_blank"><i
+                                            class="fa-regular fa-circle-question"></i> <strong>Video</strong> about the
+                                        usage
+                                        of the tools.</a>
                                 </div>
                             </div>
                         </div>

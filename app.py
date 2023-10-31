@@ -18,10 +18,7 @@ from analysis.citations_analysis import citations_analysis
 
 import data_treatment
 import merge_scopus_wos
-import extract_metadata
-import kml_files_merge
 import datetime_capture
-import train_test_files_generator
 
 # Global variables:
 UPLOAD_FOLDER = os.path.join(os.getcwd(), 'upload')
@@ -29,7 +26,7 @@ UPLOAD_FOLDER = os.path.join(os.getcwd(), 'upload')
 
 # Flask constructor:
 app = Flask(__name__)
-app.secret_key = 'sua_chave_secreta_aqui'
+app.secret_key = 'LUCAXRIBEIRINHO'
 
 
 # Home route:
@@ -235,181 +232,16 @@ def delete_merge_folder(download_folder):
     delete_s3_folder('bibliometric-analyzes-bucket', download_folder)
 
 
-# Metadata route:
-@app.route('/metadata', methods=['GET', 'POST'])
-def metadata():
-    return render_template('metadata.html', result_file=False)
+# About:
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 
-# Merged route:
-@app.route('/sucessfull_metadata', methods=['GET', 'POST'])
-def metadated():
-    try:
-        files = request.files.getlist("extract_metadata")
-
-        for file in files:
-            if str(file.filename)[-4:] == '.zip':
-                os.makedirs(r'upload\metadata')
-                file.save('upload/metadata/raw-images.zip')
-            else:
-                return render_template('metadata.html', result_file='not_a_zip')
-
-        extract_metadata.create_dataset_folder()
-        extract_metadata.unzip()
-        extract_metadata.read_images()
-        data = extract_metadata.coordinates()
-
-        headings = ['Image', 'Time', 'Date', 'Latitude', 'Longitude', 'Altitude', 'Latitude Reference',
-                    'Longitude Reference', 'Image Pixel Dimensions', 'Image Real Dimensions', 'Image Area']
-
-        return render_template('metadata.html', result_file=True, headings=headings, data=data)
-    except:
-        if os.path.exists('upload/metadata'):
-            shutil.rmtree('upload/metadata')
-
-        return render_template('error.html')
-    finally:
-        if os.path.exists('upload/dataset'):
-            shutil.rmtree('upload/dataset')
-
-
-# Metadata xlsx files download:
-@app.route('/download_xlsx_metadata_file', methods=['GET'])
-def download_metadata_xlsx_file():
-    try:
-        return send_file(
-            'upload/metadata/images-metadata.xlsx',
-            mimetype='text/csv',
-            download_name='images-metadata.xlsx',
-            as_attachment=True
-        )
-    finally:
-        threading.Timer(60, delete_metadata_folder).start()
-
-
-# Metadata kml files download:
-@app.route('/download_kml_metadata_file', methods=['GET'])
-def download_metadata_kml_file():
-    try:
-        return send_file(
-            'upload/metadata/images-metadata.kml',
-            mimetype='application/vnd.google-earth.kml+xml',
-            download_name='images-metadata.kml',
-            as_attachment=True
-        )
-    finally:
-        threading.Timer(60, delete_metadata_folder).start()
-
-
-def delete_metadata_folder():
-    shutil.rmtree('upload/metadata')
-
-
-# KML route:
-@app.route('/kml_merge', methods=['GET', 'POST'])
-def kml_merge():
-    return render_template('kml.html', result_file=False)
-
-
-# KML merged route:
-@app.route('/sucessfull_kml', methods=['GET', 'POST'])
-def kml_merged():
-    files = request.files.getlist("merge_kml_files")
-
-    kml_files_merge.create_kml_folder()
-
-    for aux, file in enumerate(files):
-        if str(file.filename)[-4:] == '.kml':
-            file.save(f'upload/kml/kml-file-{aux}.kml')
-        else:
-            pass
-
-    input_files = []
-
-    all_files = os.listdir(os.path.join(UPLOAD_FOLDER, 'kml'))
-
-    for file in all_files:
-        if str(file)[-4:] == '.kml':
-            input_files.append(os.path.join(UPLOAD_FOLDER, 'kml', file))
-        else:
-            pass
-
-    kml_files_merge.concatenate_kml_files(input_files, os.path.join(
-        UPLOAD_FOLDER, 'kml', 'merged-kml-file.kml'))
-
-    return render_template('kml.html', result_file=True)
-
-
-# KML concatenated file download:
-@app.route('/download_kml_file', methods=['GET'])
-def download_kml_file():
-    try:
-        return send_file(
-            'upload/kml/merged-kml-file.kml',
-            mimetype='application/vnd.google-earth.kml+xml',
-            download_name='merged-kml-file.kml',
-            as_attachment=True
-        )
-    finally:
-        threading.Timer(10, delete_kml_folder).start()
-
-
-def delete_kml_folder():
-    shutil.rmtree('upload/kml')
-
-
-# Train and test route:
-@app.route('/train_test', methods=['GET', 'POST'])
-def train_test():
-    return render_template('train-test.html', result_file=False)
-
-
-# Merged route:
-@app.route('/sucessfull_serialized', methods=['GET', 'POST'])
-def serialized():
-    try:
-        files = request.files.getlist("serialize_cnn_files")
-
-        os.makedirs(r'upload\to-serialize')
-
-        for file in files:
-            if str(file.filename)[-4:] == '.zip':
-                file.save('upload/to-serialize/raw-images.zip')
-            else:
-                pass
-
-        train_test_files_generator.create_dataset_folder()
-        train_test_files_generator.unzip()
-        train_test_files_generator.train_test_file_split()
-        train_test_files_generator.zip_final_files()
-
-        return render_template('train-test.html', result_file=True)
-    # except:
-    #     if os.path.exists('upload/to-serialize'):
-    #         shutil.rmtree('upload/to-serialize')
-
-    #     return render_template('error.html')
-    finally:
-        if os.path.exists('upload/dataset'):
-            shutil.rmtree('upload/dataset')
-
-
-# Train n test files download:
-@app.route('/download_train_test', methods=['GET'])
-def download_train_test():
-    try:
-        return send_file(
-            'upload/to-serialize/serialized-train-test-files.zip',
-            mimetype='zip',
-            download_name='serialized-train-test-files.zip',
-            as_attachment=True
-        )
-    finally:
-        threading.Timer(10, delete_serializer_folder).start()
-
-
-def delete_serializer_folder():
-    shutil.rmtree('upload/to-serialize')
+# Statistical analyzes:
+@app.route('/statistical')
+def statistical():
+    return render_template('statistical.html')
 
 
 # Languages route:

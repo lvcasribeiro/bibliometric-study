@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>UnB Engine</title>
+    <title>Bibliometric Engine</title>
 
     <!-- Simple datatables -->
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
@@ -25,7 +25,7 @@
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="/">UnB Engine</a>
+        <a class="navbar-brand ps-3" href="/">Bibliometric Engine</a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
                 class="fas fa-bars"></i></button>
@@ -39,29 +39,6 @@
                         class="fas fa-search"></i></button>
             </div>
         </form>
-
-        <!-- Navbar-->
-        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false"><i class="fa-solid fa-arrow-up-from-bracket"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                     <form action="/analyzes" enctype="multipart/form-data" method="post" style="padding: 5%;">
-                        <li>
-                            <div class="mb-3">
-                                <input class="form-control form-control-sm" name="database" id="database" type="file">
-                            </div>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider" />
-                        </li>
-                        <li class="d-flex justify-content-center">
-                            <button type="submit" class="btn btn-warning btn-sm" id="submit-btn">Upload</button>
-                        </li>
-                    </form>
-                </ul>
-            </li>
-        </ul>
     </nav>
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
@@ -78,17 +55,14 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             Databases Merge
                         </a>
-                        <a class="nav-link" href="/metadata">
-                            <div class="sb-nav-link-icon"><i class="fa-solid fa-image"></i></div>
-                            Image Metadata
+                        <a class="nav-link" href="/statistical">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-chart-line"></i></div>
+                            Statistical Analysis
                         </a>
-                        <a class="nav-link" href="/kml_merge">
-                            <div class="sb-nav-link-icon"><i class="fa-solid fa-file-lines"></i></div>
-                            KML Files Merge
-                        </a>
-                        <a class="nav-link" href="/train_test">
-                            <div class="sb-nav-link-icon"><i class="fa-solid fa-file-code"></i></div>
-                            Data Serializer
+                        <div class="sb-sidenav-menu-heading">Info</div>
+                        <a class="nav-link" href="/about">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-circle-info"></i></div>
+                            About
                         </a>
                     </div>
                 </div>
@@ -101,31 +75,36 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Train and Test Files Serializer</h1>
+                    <h1 class="mt-4">Statistical Analysis</h1>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item">UnB Engine</li>
-                        <li class="breadcrumb-item active">Train and Test Files Serializer</li>
+                        <li class="breadcrumb-item">Bibliometric Engine</li>
+                        <li class="breadcrumb-item active">Statistical Analysis</li>
                     </ol>
 
                     <div class="row">
                         <div class="col-xl-6">
                             <div class="card mb-4">
                                 <div class="card-header">
-                                    <i class="fa-solid fa-file-code"></i>
-                                    Serializing Test and Train Files
+                                    <i class="fa-solid fa-chart-line"></i>
+                                    Analyzing Databases
                                 </div>
                                 <div class="container" style="padding: 2.5rem;">
                                     <p>
 
-                                        Serializing train and test files for Convolutional Neural Networks (CNNs) is a
-                                        crucial step in data preparation. Serialization involves converting data into a
-                                        format suitable for efficient storage and retrieval. This ensures that large
-                                        datasets, integral for training CNNs, can be accessed seamlessly, accelerating
-                                        model development and evaluation processes.
+                                        Statistical analysis of a database involves applying mathematical and analytical
+                                        techniques to extract valuable insights from data. By exploring patterns,
+                                        trends, and relationships within the dataset, statisticians can make informed
+                                        decisions and predictions. This process plays a crucial role in fields such as
+                                        business, science, and healthcare, aiding data-driven decision-making.
                                     <div class="d-flex justify-content-center">
-                                        <img src="/static/images/train-test-image.svg" alt="Train-test image."
+                                        <img src="/static/images/statistical-image.svg" alt="Statiscical image."
                                             style="width: 17.5rem;">
                                     </div>
+                                </div>
+                                <div class="align-items-center small card-footer">
+                                    <a class="text-success text-center" style="text-decoration: none;" href="/about"><i
+                                            class="fa-regular fa-circle-question"></i> <strong>About</strong> the usage
+                                        of the tool.</a>
                                 </div>
                             </div>
                         </div>
@@ -137,19 +116,28 @@
                                 </div>
                                 <div class="container" style="padding: 2.5rem;">
                                     <p>
-                                        Here, u must drop a <strong>.zip</strong> file, containing all the images u want
-                                        to serialize.
+                                        Here, u must drop your <strong>merged .csv</strong> file, as instructed in the
+                                        callout aside.
                                     </p>
-                                    <form action="/sucessfull_serialized" enctype="multipart/form-data" method="post">
+                                    <form action="/analyzes" enctype="multipart/form-data" method="post">
                                         <div class="mb-3">
-                                            <input class="form-control form-control-sm" name="serialize_cnn_files"
-                                                id="serialize_cnn_files" type="file" multiple>
+                                            <input class="form-control form-control-sm" name="database" id="database" type="file">
                                         </div>
                                         {% if result_file == True %}
                                         <small>
                                             <div class="alert alert-success text-center alert-dismissible fade show"
                                                 role="alert">
-                                                Sucessfully serialized!
+                                                Sucessfully merged!
+                                                <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                        </small>
+                                        {% endif %}
+                                        {% if result_file == 'not_a_zip' %}
+                                        <small>
+                                            <div class="alert alert-danger text-center alert-dismissible fade show"
+                                                role="alert">
+                                                U must upload a <strong>.csv</strong> and a <strong>.txt</strong> file!
                                                 <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert"
                                                     aria-label="Close"></button>
                                             </div>
@@ -159,7 +147,8 @@
                                             <button type="submit" class="btn btn-warning btn-sm"
                                                 id="submit-btn">Upload</button>
                                             {% if result_file == True %}
-                                            <a class="btn btn-success btn-sm" href="/download_train_test">
+                                            <a class="btn btn-success btn-sm" href="/download_file"
+                                                download="scopus-wos-merged.csv">
                                                 Download
                                             </a>
                                             {% endif %}
@@ -174,7 +163,7 @@
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; UnB (GPIPP) UnB Engine - 2023</div>
+                        <div class="text-muted">Copyright &copy; UnB (GPIPP) Bibliometric Engine - 2023</div>
                         <div>
                             <a href="#">Privacy Policy</a>
                             &middot;
