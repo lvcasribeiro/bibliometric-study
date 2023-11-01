@@ -64,6 +64,25 @@
                             <div class="sb-nav-link-icon"><i class="fa-solid fa-circle-info"></i></div>
                             About
                         </a>
+                        <div class="sb-sidenav-menu-heading">Analyses</div>
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                            data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                            Overview
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
+                            data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="/languages">Languages</a>
+                                <a class="nav-link" href="/year">Year</a>
+                                <a class="nav-link" href="/evolution">Year Evolution</a>
+                                <a class="nav-link" href="/periodic">Periodics</a>
+                                <a class="nav-link" href="/citation">Citations</a>
+                                <a class="nav-link" href="/">Keywords</a>
+                                <a class="nav-link" href="/document">Document Type</a>
+                            </nav>
+                        </div>
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
@@ -75,53 +94,61 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">About</h1>
+                    <h1 class="mt-4">Keyword Analysis</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item">Bibliometric Engine</li>
-                        <li class="breadcrumb-item active">About</li>
+                        <li class="breadcrumb-item"><a href="/analyzes"
+                                style="color: inherit; text-decoration: none;">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Keyword Analysis</li>
                     </ol>
 
+
                     <div class="row">
-                        <div class="col-xl-12">
+                        <div class="col-xl-3">
                             <div class="card mb-4">
                                 <div class="card-header">
-                                    <i class="fa-regular fa-circle-question me-1"></i>
-                                    About the <strong>Usage of the Tools</strong>
+                                    <i class="fa-solid fa-key me-1"></i>
+                                    Keyword Analysis
                                 </div>
                                 <div class="container" style="padding: 2.5rem;">
                                     <p>
-                                        Merging databases and conducting statistical analysis are essential tools in
-                                        modern data management. By combining disparate datasets, researchers and
-                                        analysts can uncover valuable insights, spot trends, and make informed
-                                        decisions. Statistical analysis aids in extracting meaningful patterns and
-                                        drawing conclusions, supporting data-driven strategies across various fields.
+                                        Keywords analysis in bibliometric studies is pivotal for unveiling the core
+                                        themes and emerging topics within a field of research. By examining the
+                                        frequency and trends of keywords, researchers can discern the focal areas of
+                                        scholarly interest, aiding in the identification of knowledge gaps and guiding
+                                        future research directions.
                                     </p>
-
-                                    <br>
-
-                                    <ol class="list-group list-group-numbered">
-                                        <li><h6 class="text-sucess">Steps for Databases Merge Tool:</h6></li>
-                                        <br>
-                                        <li class="list-group-item">Using your search strings, perform a search in the <strong>Scopus</strong> database and export the results in <strong>.csv</strong> format;</li>
-                                        <li class="list-group-item">Using your search strings, perform a search in the <strong>Web of Science</strong> database and export the results in <strong>.txt</strong> (plain text) format;</li>
-                                        <li class="list-group-item">Ensure that you export with all fields selected, capturing all possible columns;</li>
-                                        <li class="list-group-item">Upload both files to the Databases Merge tool and;</li>
-                                        <li class="list-group-item">Download the results.</li>
-                                    </ol>
-
-                                    <br><br>
-
-                                    <ol class="list-group list-group-numbered">
-                                        <li><h6>Steps for Statistical Analysis Tool:</h6></li>
-                                        <br>
-                                        <li class="list-group-item">Upload the resulting spreadsheet obtained from <strong>Databases Merge</strong> into the Statistical Analysis tool.</li>
-                                    </ol>
+                                    <div class="d-flex justify-content-center">
+                                        <img src="/static/images/keywords-image.svg" alt="Languages image."
+                                            style="width: 17.5rem;">
+                                    </div>
                                 </div>
-                                <div class="align-items-center small card-footer">
-                                    <a class="text-primary text-center" style="text-decoration: none;" href="https://youtu.be/UFYaY46OYEo" target="_blank"><i
-                                            class="fa-regular fa-circle-question"></i> <strong>Video</strong> about the
-                                        usage
-                                        of the tools.</a>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-9">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fa-solid fa-key me-1"></i>
+                                    Keywords
+                                </div>
+                                <div class="card-body">
+                                    <table class="table" id="datatables-keywords">
+                                        <thead>
+                                            <tr>
+                                                <th>Keyword</th>
+                                                <th>Occurrence</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for key, value in keywords_json.items() %}
+                                            <tr>
+                                                <td> {{ key }} </td>
+                                                <td> {{ value }} </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -142,6 +169,11 @@
             </footer>
         </div>
     </div>
+
+    <!-- Simple datatables -->
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+        crossorigin="anonymous"></script>
+    <script src="/static/assets/datatables-simple-demo.js"></script>
 
     <!-- Bootstramp -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"

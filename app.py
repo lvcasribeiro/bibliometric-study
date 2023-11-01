@@ -256,7 +256,83 @@ def languages():
     except:
         return render_template('error.html')
 
+# Year route:
+@app.route('/year')
+def year():
+    try:
+        dataframe_name = session.get('dataframe_name')
+        dataframe = data_treatment.csv_reading(dataframe_name)
+        years_json = year_analysis(dataframe)
+
+        return render_template('analysis/year.html', years_json=years_json)
+    except:
+        return render_template('error.html')
+    
+
+# Evolution route:
+@app.route('/evolution')
+def evolution():
+    try:
+        dataframe_name = session.get('dataframe_name')
+        dataframe = data_treatment.csv_reading(dataframe_name)
+        evolutions_json = evolution_analysis(dataframe)
+
+        return render_template('analysis/evolution_per_year.html', evolutions_json=evolutions_json)
+    except:
+        return render_template('error.html')
+
+
+# Evolution route:
+@app.route('/periodic')
+def periodic():
+    try:
+        dataframe_name = session.get('dataframe_name')
+        dataframe = data_treatment.csv_reading(dataframe_name)
+        periodics_json = periodics_analysis(dataframe)
+
+        return render_template('analysis/periodics.html', periodics_json=periodics_json)
+    except:
+        return render_template('error.html')
+
+
+# Evolution route:
+@app.route('/citation')
+def citation():
+    try:
+        dataframe_name = session.get('dataframe_name')
+        dataframe = data_treatment.csv_reading(dataframe_name)
+        citations_json = citations_analysis(dataframe)
+
+        return render_template('analysis/citations.html', citations_json=citations_json)
+    except:
+        return render_template('error.html')
+
+
+# Evolution route:
+@app.route('/keyword')
+def keyword():
+    try:
+        dataframe_name = session.get('dataframe_name')
+        dataframe = data_treatment.csv_reading(dataframe_name)
+        keywords_json = keywords_analysis(dataframe)
+
+        return render_template('analysis/keywords.html', keywords_json=keywords_json)
+    except:
+        return render_template('error.html')
+
+# Evolution route:
+@app.route('/document')
+def document():
+    try:
+        dataframe_name = session.get('dataframe_name')
+        dataframe = data_treatment.csv_reading(dataframe_name)
+        documents_json = type_analysis(dataframe)
+
+        return render_template('analysis/documents.html', documents_json=documents_json)
+    except:
+        return render_template('error.html')
+
 
 # Overall execution:
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=False, host='0.0.0.0')
