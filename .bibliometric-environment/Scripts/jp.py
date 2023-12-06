@@ -1,4 +1,4 @@
-#!C:\Users\lucas\Downloads\github\unb-environment\.bibliometric-virtual-env\Scripts\python.exe
+#!C:\Users\lucas\Downloads\github\bibliometric-environment\.bibliometric-environment\Scripts\python.exe
 
 import sys
 import json

@@ -79,36 +79,29 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Statistical Analysis</h1>
+                    <h1 class="mt-4">PDF Data Summary</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item">Bibliometric Engine</li>
-                        <li class="breadcrumb-item active">Statistical Analysis</li>
+                        <li class="breadcrumb-item active">PDF Data Summary</li>
                     </ol>
 
                     <div class="row">
                         <div class="col-xl-6">
                             <div class="card mb-4">
                                 <div class="card-header">
-                                    <i class="fa-solid fa-chart-line"></i>
-                                    Analyzing Databases
+                                    <i class="fa-solid fa-database me-1"></i>
+                                    Elementary Questions About your PDF
                                 </div>
                                 <div class="container" style="padding: 2.5rem;">
                                     <p>
-
-                                        Statistical analysis of a database involves applying mathematical and analytical
-                                        techniques to extract valuable insights from data. By exploring patterns,
-                                        trends, and relationships within the dataset, statisticians can make informed
-                                        decisions and predictions. This process plays a crucial role in fields such as
-                                        business, science, and healthcare, aiding data-driven decision-making.
+                                        Developed to facilitate the comprehension of academic articles, this tool generates elementary questions about the paper's content and, using automatic PDF reading, provides answers. This revolutionary approach streamlines information assimilation, making the analysis of papers more accessible and efficient.
                                     <div class="d-flex justify-content-center">
-                                        <img src="/static/images/statistical-image.svg" alt="Statiscical image."
+                                        <img src="/static/images/chat-pdf.svg" alt="Chat image."
                                             style="width: 17.5rem;">
                                     </div>
                                 </div>
                                 <div class="align-items-center small card-footer">
-                                    <a class="text-success text-center" style="text-decoration: none;" href="/about"><i
-                                            class="fa-regular fa-circle-question"></i> <strong>About</strong> the usage
-                                        of the tool.</a>
+                                    <a class="text-success text-center" style="text-decoration: none;" href="/about"><i class="fa-regular fa-circle-question"></i> <strong>About</strong> the usage of the tool.</a>
                                 </div>
                             </div>
                         </div>
@@ -120,18 +113,18 @@
                                 </div>
                                 <div class="container" style="padding: 2.5rem;">
                                     <p>
-                                        Here, u must drop your scopus-wos-merged<strong>.csv</strong> file, as instructed in the
-                                        callout aside.
+                                        Here, you must drop a paper<strong>.pdf</strong> file, as instructed in the callout aside.
                                     </p>
-                                    <form action="/analyzes" enctype="multipart/form-data" method="post">
+                                    <form action="/chat_pdf" enctype="multipart/form-data" method="post">
                                         <div class="mb-3">
-                                            <input class="form-control form-control-sm" name="database" id="database" type="file">
+                                            <input class="form-control form-control-sm" name="file"
+                                                id="merge_databases" type="file" accept=".pdf" required>
                                         </div>
                                         {% if result_file == True %}
                                         <small>
                                             <div class="alert alert-success text-center alert-dismissible fade show"
                                                 role="alert">
-                                                Sucessfully merged!
+                                                Sucessfully summarized!
                                                 <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert"
                                                     aria-label="Close"></button>
                                             </div>
@@ -141,7 +134,7 @@
                                         <small>
                                             <div class="alert alert-danger text-center alert-dismissible fade show"
                                                 role="alert">
-                                                U must upload a <strong>.csv</strong> and a <strong>.txt</strong> file!
+                                                U must upload a <strong>.pdf</strong> file!
                                                 <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert"
                                                     aria-label="Close"></button>
                                             </div>
@@ -150,18 +143,80 @@
                                         <div class="d-flex justify-content-around">
                                             <button type="submit" class="btn btn-warning btn-sm"
                                                 id="submit-btn">Upload</button>
-                                            {% if result_file == True %}
-                                            <a class="btn btn-success btn-sm" href="/download_file"
-                                                download="scopus-wos-merged.csv">
-                                                Download
-                                            </a>
-                                            {% endif %}
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    {% if result_file == True %}
+                    <br><br>
+
+                    <hr>
+                    <br>
+
+                    <h3 class="text-center">Questions and Answers</h3>
+                    
+
+                    <br><br>
+
+                    <div class="row" style="margin-bottom: 4.5vh;">
+                        <div class="col-xl-6">
+                            <div class="card mb-4 h-50 d-flex flex-fill">
+                                <div class="card-header">
+                                    <i class="fa-solid fa-comment-medical text-success"></i>
+                                    What are the main topics of this paper?
+                                </div>
+                                <div class="container h-50" style="padding: 2.5rem;">
+                                    <p class="h-50">
+                                        {{ answers[0] }}
+                                    </p>
+                                </div>
+                            </div>
+                    
+                            <div class="card mb-4 h-50 d-flex flex-fill">
+                                <div class="card-header">
+                                    <i class="fa-solid fa-comment-medical text-success"></i>
+                                    Can you resume the introduction?
+                                </div>
+                                <div class="container h-50" style="padding: 2.5rem;">
+                                    <p class="h-50">
+                                        {{ answers[1] }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br>
+                    
+                        <div class="col-xl-6">
+                            <div class="card mb-4 h-50 d-flex flex-fill">
+                                <div class="card-header">
+                                    <i class="fa-solid fa-comment-medical text-success"></i>
+                                    What research methods were employed in the study?
+                                </div>
+                                <div class="container h-50" style="padding: 2.5rem;">
+                                    <p class="h-50">
+                                        {{ answers[2] }}
+                                    </p>
+                                </div>
+                            </div>
+                    
+                            <div class="card mb-4 h-50 d-flex flex-fill">
+                                <div class="card-header">
+                                    <i class="fa-solid fa-comment-medical text-success"></i>
+                                    How does the study contribute to existing knowledge in the field?
+                                </div>
+                                <div class="container h-50" style="padding: 2.5rem;">
+                                    <p class="h-50">
+                                        {{ answers[3] }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </main>
             <footer class="py-4 bg-light mt-auto">

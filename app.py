@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 import os
 import boto3
 import uuid
+import requests
 import shutil
 import threading
 
@@ -22,6 +23,9 @@ import datetime_capture
 
 # Global variables:
 UPLOAD_FOLDER = os.path.join(os.getcwd(), 'upload')
+CHATPDF_API_KEY = 'sec_MwsqofZUKMBJEqS51CAojgb008k1Dbjw'
+UPLOAD_API_URL = 'https://api.chatpdf.com/v1/sources/add-file'
+ASK_API_URL = 'https://api.chatpdf.com/v1/chats/message'
 
 
 # Flask constructor:
@@ -51,6 +55,7 @@ def create_s3_folder(bucket_name, s3_folder_name):
     except Exception as e:
         return False
 
+
 def delete_s3_folder(bucket_name, s3_folder_name):
     try:
         objects = s3.list_objects_v2(Bucket=bucket_name, Prefix=s3_folder_name)
@@ -59,7 +64,7 @@ def delete_s3_folder(bucket_name, s3_folder_name):
                 s3.delete_object(Bucket=bucket_name, Key=obj['Key'])
 
         s3.delete_object(Bucket=bucket_name, Key=s3_folder_name)
-        
+
         return True
     except Exception as e:
         return False
@@ -135,15 +140,15 @@ def analyzes():
                         args=(dataframe_name,)).start()
 
         return render_template('upload.html',
-                                headings=headings,
-                                data=data,
-                                years_json=years_json,
-                                languages_json=languages_json,
-                                documents_json=documents_json,
-                                evolutions_json=evolutions_json,
-                                periodics_json=periodics_json,
-                                keywords_json=keywords_json,
-                                citations_json=citations_json)
+                               headings=headings,
+                               data=data,
+                               years_json=years_json,
+                               languages_json=languages_json,
+                               documents_json=documents_json,
+                               evolutions_json=evolutions_json,
+                               periodics_json=periodics_json,
+                               keywords_json=keywords_json,
+                               citations_json=citations_json)
     except:
         return render_template('error.html')
 
@@ -173,25 +178,30 @@ def merged():
 
         # os.makedirs(f'upload\\{session["merge_upload_folder"]}')
 
-        create_s3_folder('bibliometric-analyzes-bucket', session["merge_upload_folder"])
+        create_s3_folder('bibliometric-analyzes-bucket',
+                         session["merge_upload_folder"])
 
         for file in files:
             if len(files) > 1:
                 if str(file.filename)[-4:] == '.txt':
                     # file.save(f'upload/{session["merge_upload_folder"]}/wos.txt')
-                    upload_file_to_s3(file, 'bibliometric-analyzes-bucket', f'{session["merge_upload_folder"]}/wos.txt')
+                    upload_file_to_s3(
+                        file, 'bibliometric-analyzes-bucket', f'{session["merge_upload_folder"]}/wos.txt')
                 elif str(file.filename)[-4:] == '.csv':
                     # file.save(f'upload/{session["merge_upload_folder"]}/scopus.csv')
-                    upload_file_to_s3(file, 'bibliometric-analyzes-bucket', f'{session["merge_upload_folder"]}/scopus.csv')
+                    upload_file_to_s3(file, 'bibliometric-analyzes-bucket',
+                                      f'{session["merge_upload_folder"]}/scopus.csv')
                 else:
                     # if os.path.exists(f'upload/{session["merge_upload_folder"]}'):
                     #     shutil.rmtree(f'upload/{session["merge_upload_folder"]}')
-                    delete_s3_folder('bibliometric-analyzes-bucket', session["merge_upload_folder"])
+                    delete_s3_folder('bibliometric-analyzes-bucket',
+                                     session["merge_upload_folder"])
                     return render_template('merge.html', result_file='not_a_zip')
             else:
                 # if os.path.exists(f'upload/{session["merge_upload_folder"]}'):
                 #     shutil.rmtree(f'upload/{session["merge_upload_folder"]}')
-                delete_s3_folder('bibliometric-analyzes-bucket', session["merge_upload_folder"])
+                delete_s3_folder('bibliometric-analyzes-bucket',
+                                 session["merge_upload_folder"])
                 return render_template('merge.html', result_file='not_a_zip')
 
         merge_scopus_wos.merge_scopus_wos(str_datetime, session_id)
@@ -200,7 +210,8 @@ def merged():
     except:
         # if os.path.exists(f'upload/{session["merge_upload_folder"]}'):
         #     shutil.rmtree(f'upload/{session["merge_upload_folder"]}')
-        delete_s3_folder('bibliometric-analyzes-bucket', session["merge_upload_folder"])
+        delete_s3_folder('bibliometric-analyzes-bucket',
+                         session["merge_upload_folder"])
 
         return render_template('error.html')
 
@@ -212,7 +223,8 @@ def download():
         download_folder = session.get("merge_upload_folder")
         if download_folder is not None:
             return send_file(
-                get_file_object_from_s3('bibliometric-analyzes-bucket', f'{download_folder}/merged-database.csv'),
+                get_file_object_from_s3(
+                    'bibliometric-analyzes-bucket', f'{download_folder}/merged-database.csv'),
                 # f'upload/{download_folder}/merged-database.csv',
                 mimetype='text/csv',
                 download_name='scopus-wos-merged.csv',
@@ -230,6 +242,72 @@ def delete_merge_folder(download_folder):
     #     shutil.rmtree(f'upload/{download_folder}')
 
     delete_s3_folder('bibliometric-analyzes-bucket', download_folder)
+
+
+# Chat route:
+@app.route('/chat', methods=['GET', 'POST'])
+def chat():
+    return render_template('chat.html', result_file=False)
+
+
+@app.route('/chat_pdf', methods=['POST'])
+def chat_pdf():
+    try:
+        if 'file' not in request.files:
+            return redirect(url_for('index'))
+
+        file = request.files['file']
+
+        if file.filename == '':
+            return redirect(url_for('index'))
+
+        if file:
+            # Upload file to ChatPDF
+            headers = {'x-api-key': CHATPDF_API_KEY}
+            files = {'file': (file.filename, file.read())}
+
+            response = requests.post(UPLOAD_API_URL, headers=headers, files=files)
+
+            if response.status_code == 200:
+                source_id = response.json()['sourceId']
+                # Ask questions using ChatPDF API
+                questions = [
+                    {
+                        'role': 'user',
+                        'content': 'What are the main topics of this paper?',
+                    },
+                    {
+                        'role': 'user',
+                        'content': 'Can you resume the introduction?',
+                    },
+                    {
+                        'role': 'user',
+                        'content': 'What research methods were employed in the study?',
+                    },
+                    {
+                        'role': 'user',
+                        'content': 'How does the study contribute to existing knowledge in the field?',
+                    },
+                    # Add more questions as needed
+                ]
+
+                questions_list = ['What are the main topics of this paper?', 'Can you resume the introduction?',
+                                'What research methods were employed in the study?', 'How does the study contribute to existing knowledge in the field?']
+
+                data = {'sourceId': source_id, 'messages': questions}
+                response = requests.post(ASK_API_URL, headers=headers, json=data)
+
+                if response.status_code == 200:
+                    answers = [answer.strip() for answer in response.json()['content'].split('\n') if answer.strip()]
+                    print(answers)
+                    result = list(zip(questions_list, answers))
+                    return render_template('chat.html', result=result, answers=answers, result_file=True)
+                else:
+                    return f'Error asking questions: {response.status_code} - {response.text}'
+            else:
+                return f'Error uploading file: {response.status_code} - {response.text}'
+    except:
+        return render_template('error.html')
 
 
 # About:
@@ -257,6 +335,8 @@ def languages():
         return render_template('error.html')
 
 # Year route:
+
+
 @app.route('/year')
 def year():
     try:
@@ -267,7 +347,7 @@ def year():
         return render_template('analysis/year.html', years_json=years_json)
     except:
         return render_template('error.html')
-    
+
 
 # Evolution route:
 @app.route('/evolution')
@@ -321,6 +401,8 @@ def keyword():
         return render_template('error.html')
 
 # Evolution route:
+
+
 @app.route('/document')
 def document():
     try:
@@ -335,4 +417,4 @@ def document():
 
 # Overall execution:
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0')
