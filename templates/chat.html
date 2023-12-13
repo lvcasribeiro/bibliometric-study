@@ -19,12 +19,13 @@
 
     <!-- Styling -->
     <link href="/static/styles.css" rel="stylesheet" />
-    <link rel="shortcut icon" href="/static/images/book-favicon.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="/static/images/datablend-logo.png" type="image/x-icon">
 </head>
 
 <body class="sb-nav-fixed">
-    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark" style="background-color: #1C292F;">
         <!-- Navbar Brand-->
+        <img src="/static/images/datablend-logo.png" style="margin-left: .7rem; margin-right: -.5rem; width: 1.2rem; height: 1.2rem;" alt="">
         <a class="navbar-brand ps-3" href="/">Bibliometric Engine</a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
@@ -35,14 +36,14 @@
             <div class="input-group">
                 <input class="form-control" type="text" placeholder="Search" aria-label="Search "
                     aria-describedby="btnNavbarSearch" />
-                <button class="btn btn-secondary" id="btnNavbarSearch" type="button"><i
+                <button class="btn" style="background-color: #CED2D3;" id="btnNavbarSearch" type="button"><i
                         class="fas fa-search"></i></button>
             </div>
         </form>
     </nav>
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
-            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" style="background-color: #1C292F;" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">Menu</div>
@@ -70,7 +71,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="sb-sidenav-footer">
+                <div class="sb-sidenav-footer" style="background-color: #22333b;">
                     <div class="small">Author:</div>
                     Lucas Ribeiro
                 </div>
@@ -79,17 +80,17 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">PDF Data Summary</h1>
+                    <h1 class="mt-4">Data Summary</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item">Bibliometric Engine</li>
-                        <li class="breadcrumb-item active">PDF Data Summary</li>
+                        <li class="breadcrumb-item active">Data Summary</li>
                     </ol>
 
                     <div class="row">
-                        <div class="col-xl-6">
+                        <div class="col-xl-7">
                             <div class="card mb-4">
                                 <div class="card-header">
-                                    <i class="fa-solid fa-database me-1"></i>
+                                    <i class="fa-solid fa-virus"></i>
                                     Elementary Questions About your PDF
                                 </div>
                                 <div class="container" style="padding: 2.5rem;">
@@ -100,15 +101,16 @@
                                             style="width: 17.5rem;">
                                     </div>
                                 </div>
-                                <div class="align-items-center small card-footer">
+                                <div class="align-items-center small card-footer d-flex justify-content-between">
                                     <a class="text-success text-center" style="text-decoration: none;" href="/about"><i class="fa-regular fa-circle-question"></i> <strong>About</strong> the usage of the tool.</a>
+                                    <span class="badge badge-pill text-sm" style="color: #fff; background-color: #fca311; font-size: smaller;">BETA v1.0</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-6">
+                        <div class="col-xl-5">
                             <div class="card mb-4">
                                 <div class="card-header">
-                                    <i class="fa-solid fa-file-arrow-down me-1"></i>
+                                    <i class="fa-solid fa-circle-arrow-up"></i>
                                     Upload files
                                 </div>
                                 <div class="container" style="padding: 2.5rem;">
@@ -141,7 +143,7 @@
                                         </small>
                                         {% endif %}
                                         <div class="d-flex justify-content-around">
-                                            <button type="submit" class="btn btn-warning btn-sm"
+                                            <button type="submit" class="btn btn-sm" style="color: #fff; background-color: #2274A5;"
                                                 id="submit-btn">Upload</button>
                                         </div>
                                     </form>
